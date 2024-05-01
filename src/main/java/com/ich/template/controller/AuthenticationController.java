@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ich.template.dto.AuthenticationRequest;
 import com.ich.template.dto.AuthenticationResponse;
 import com.ich.template.dto.RegisterRequest;
+import com.ich.template.dto.ResponseStatus;
+import com.ich.template.exception.BadRequestException;
 import com.ich.template.service.AuthenticationService;
 
 
@@ -15,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,7 +36,13 @@ public class AuthenticationController {
 	  }
 	  @PostMapping("/authenticate")
 	  public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
-	    return ResponseEntity.ok(service.authenticate(request));
+		    try {
+				return ResponseEntity.ok(service.authenticate(request));
+				//return new ResponseEntity<Object>(contentService.findAllByAuthor(id), HttpStatus.OK);
+			} catch (BadRequestException e) {
+				return new ResponseEntity<AuthenticationResponse>(HttpStatus.BAD_REQUEST);			
+			}
+
 	  }
 
 	  @PostMapping("/refresh-token")
