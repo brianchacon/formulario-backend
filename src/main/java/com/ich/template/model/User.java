@@ -29,6 +29,9 @@ public class User implements UserDetails{
 
 	@Column(name = "created")
 	private Date created = new Date();//Registrará la creación de una cuenta de usuario
+
+	@Column(name = "company")
+	private int company;
 	
 	@Column(name = "firstName")
 	private String firstName;
